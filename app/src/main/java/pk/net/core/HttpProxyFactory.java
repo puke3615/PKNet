@@ -60,7 +60,7 @@ public final class HttpProxyFactory {
      * @param mResultAccessor
      * @return
      */
-    public HttpProxyFactory setResultAccessor(IResultTypeAccessor mResultAccessor) {
+    public final HttpProxyFactory setResultAccessor(IResultTypeAccessor mResultAccessor) {
         this.mResultAccessor = mResultAccessor;
         return this;
     }

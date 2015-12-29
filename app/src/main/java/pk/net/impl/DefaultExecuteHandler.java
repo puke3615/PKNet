@@ -236,7 +236,7 @@ public class DefaultExecuteHandler implements IExecuteHandler {
     /**
      * 设置网络缓存插件
      **/
-    public static void setHttpCache(IHttpCache cache) {
+    public static final void setHttpCache(IHttpCache cache) {
         DefaultExecuteHandler.cache = cache;
     }
 
