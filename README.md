@@ -37,10 +37,10 @@ Android动态代理生成网络请求执行类
         this.mExecuteHandler = mExecuteHandler;
         return this;
     }
+
     
     
     DefaultExecuteHandler中可以设置缓存IHttpCache
-    
     /**
      * 设置网络缓存插件
      **/
