@@ -73,9 +73,9 @@ public class DefaultExecuteHandler implements IExecuteHandler {
             new ThreadPoolExecutor.DiscardPolicy());
 
     @Override
-    public void execute(final IRequest request, final Class cls, final IResult callback) {
-        if (request == null || callback == null) {
-            return;
+    public IRequest execute(final IRequest request, final Class cls, final IResult callback) {
+        if (request == null) {
+            return null;
         }
 
         threadPool.execute(new Runnable() {
@@ -85,10 +85,12 @@ public class DefaultExecuteHandler implements IExecuteHandler {
                 Type type = request.getType();
                 Map<String, Object> params = request.getParams();
                 String urlFlag = createUrl(url, params);
-                if (cache != null) {//若设置了缓存
+                if (request.supportCache() && cache != null) {//若设置了缓存
                     String result = cache.getCache(urlFlag);
                     if (result != null) {//且缓存能够取到值
-                        doCallback(result, true, cls, 200, callback);
+                        if (callback != null) {
+                            doCallback(result, true, cls, 200, callback);
+                        }
                         return;
                     }
                 }
@@ -109,6 +111,7 @@ public class DefaultExecuteHandler implements IExecuteHandler {
                 doCallback(response.result, false, cls, response.responseCode, callback);
             }
         });
+        return request;
     }
 
     //执行Get请求

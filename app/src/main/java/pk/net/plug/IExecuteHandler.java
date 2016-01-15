@@ -15,6 +15,6 @@ public interface IExecuteHandler {
     /**
      * 方法在主线程调用，然后通过异步任务执行结束后，最终仍在主线程回调
      **/
-    <T> void execute(IRequest request, Class resultType, IResult<T> result);
+    <T> IRequest execute(IRequest request, Class resultType, IResult<T> result);
 
 }

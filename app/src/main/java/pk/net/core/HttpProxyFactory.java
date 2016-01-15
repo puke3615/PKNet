@@ -18,7 +18,6 @@ import pk.net.plug.InterfaceAdapter;
  * 该类专注于代理类的生成过程，将网络部分的处理转交IExecuteHandler进行处理
  * 为了提高拓展性，将关键功能以接口的形式进行调用，方便外部程序以插件的方式进行功能拓展
  */
-@SuppressWarnings({"rawtypes", "unchecked"})
 public final class HttpProxyFactory {
 
     //the adapter of conver from class to IRequest
@@ -121,7 +120,7 @@ public final class HttpProxyFactory {
                 throw new PKHttpException(mInterfaceClass.getName() + "的" + method.getName() + "方法中，IResult的参数位置不正确");
             }
 
-            return null;
+            return request;
         }
     }
 

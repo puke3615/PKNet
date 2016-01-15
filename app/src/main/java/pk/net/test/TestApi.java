@@ -5,6 +5,7 @@ import pk.net.anno.Param;
 import pk.net.anno.URL;
 import pk.net.core.IResult;
 import pk.net.core.Type;
+import pk.net.core.IRequest;
 
 /**
  * @author wzj
@@ -15,6 +16,9 @@ import pk.net.core.Type;
 public interface TestApi {
 
     @Config(type = Type.POST, supportCache = true)
-    void testRequest(@Param("username") String u, @Param("password") String p, IResult<Entity> result);
+    IRequest testRequest(
+            @Param("username") String u,
+            @Param("password") String p,
+            IResult<Entity> result);
 
 }
