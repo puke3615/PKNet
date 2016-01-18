@@ -4,7 +4,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import pk.net.PKHttpException;
+import pk.net.PKException;
 import pk.net.plug.IExecuteHandler;
 import pk.net.plug.IResultTypeAccessor;
 import pk.net.plug.InterfaceAdapter;
@@ -74,6 +74,7 @@ public final class HttpProxyFactory {
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            ITask task = null;
             IRequest request = null;
             try {
                 request = mInterfaceAdapter.doAdapter(mInterfaceClass, method, args);
@@ -81,20 +82,20 @@ public final class HttpProxyFactory {
                 e.printStackTrace();
             }
             if (request == null) {
-                throw new PKHttpException("接口类转型IRequest失败");
+                throw new PKException("接口类转型IRequest失败");
             }
             if (args == null || args.length == 0) {
-                throw new PKHttpException(mInterfaceClass.getName() + "的" + method.getName() + "方法中，参数设置错误");
+                throw new PKException(mInterfaceClass.getName() + "的" + method.getName() + "方法中，参数设置错误");
             }
 
             Object result = args[args.length - 1];
             if (result instanceof IResult) {
                 if (mExecuteHandler == null) {
-                    throw new PKHttpException("未设置网络请求执行类IExecuteHandler");
+                    throw new PKException("未设置网络请求执行类IExecuteHandler");
                 }
 
                 if (mResultAccessor == null) {
-                    throw new PKHttpException("未设置泛型类型获取器IResultTypeAccessor");
+                    throw new PKException("未设置泛型类型获取器IResultTypeAccessor");
                 }
 
                 IResult resultListener = (IResult) result;
@@ -106,21 +107,23 @@ public final class HttpProxyFactory {
                 }
 
                 if (resultType == null) {
-                    throw new PKHttpException("泛型的真实类型获取失败");
+                    throw new PKException("泛型的真实类型获取失败");
                 }
 
                 try {
-                    mExecuteHandler.execute(request, resultType, resultListener);
+                    task = mExecuteHandler.execute(request, resultType, resultListener);
+                } catch (PKException e) {
+                    throw  e;
                 } catch (Exception e) {
                     e.printStackTrace();
                     resultListener.onResult(Result.createError("网络请求执行异常"));
                 }
 
             } else {
-                throw new PKHttpException(mInterfaceClass.getName() + "的" + method.getName() + "方法中，IResult的参数位置不正确");
+                throw new PKException(mInterfaceClass.getName() + "的" + method.getName() + "方法中，IResult的参数位置不正确");
             }
 
-            return request;
+            return task;
         }
     }
 

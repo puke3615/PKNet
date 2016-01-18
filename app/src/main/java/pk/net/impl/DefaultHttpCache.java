@@ -2,12 +2,14 @@ package pk.net.impl;
 
 import android.util.LruCache;
 
+import pk.net.core.ITask;
+
 /**
  * @author wzj
  * @version 2015/11/20
  * @Mark
  */
-public class DefaultHttpCache implements DefaultExecuteHandler.IHttpCache {
+public class DefaultHttpCache implements ITask.ICache {
 
     private static final int maxSize = 4 * 1024 * 1024; // 4MiB;
 

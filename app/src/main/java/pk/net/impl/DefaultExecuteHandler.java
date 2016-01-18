@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 import pk.net.core.IRequest;
 import pk.net.core.IResult;
+import pk.net.core.ITask;
 import pk.net.core.Result;
 import pk.net.core.Type;
 import pk.net.plug.IExecuteHandler;
@@ -41,7 +42,7 @@ public class DefaultExecuteHandler implements IExecuteHandler {
 
     private static final Handler handler = new Handler(Looper.getMainLooper());
 
-    private static IHttpCache cache;
+    private static ITask.ICache cache;
 
     private static Gson gson = new Gson();
 
@@ -73,7 +74,7 @@ public class DefaultExecuteHandler implements IExecuteHandler {
             new ThreadPoolExecutor.DiscardPolicy());
 
     @Override
-    public IRequest execute(final IRequest request, final Class cls, final IResult callback) {
+    public ITask execute(final IRequest request, final Class cls, final IResult callback) {
         if (request == null) {
             return null;
         }
@@ -111,7 +112,7 @@ public class DefaultExecuteHandler implements IExecuteHandler {
                 doCallback(response.result, false, cls, response.responseCode, callback);
             }
         });
-        return request;
+        return null;
     }
 
     //执行Get请求
@@ -214,7 +215,7 @@ public class DefaultExecuteHandler implements IExecuteHandler {
 
     //拼接请求的url，并将该url作为请求的标识位
     private String createUrl(String url, Map<String, Object> params) {
-        if (params == null || params.size() == 0) {
+        if (url == null && params == null || params.size() == 0) {
             return url;
         }
         StringBuilder builder = new StringBuilder(url);
@@ -230,8 +231,9 @@ public class DefaultExecuteHandler implements IExecuteHandler {
                         .append("&");
             }
         }
-        if (builder.indexOf("&") == builder.length() - 1) {
-            builder.deleteCharAt(builder.length() - 1);
+        int length = builder.length();
+        if (length > 0 && builder.charAt(length - 1) == '&') {
+            builder.deleteCharAt(length - 1);
         }
         return builder.toString();
     }
@@ -239,7 +241,7 @@ public class DefaultExecuteHandler implements IExecuteHandler {
     /**
      * 设置网络缓存插件
      **/
-    public static final void setHttpCache(IHttpCache cache) {
+    public static final void setHttpCache(ITask.ICache cache) {
         DefaultExecuteHandler.cache = cache;
     }
 

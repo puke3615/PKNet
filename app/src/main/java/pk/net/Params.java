@@ -85,4 +85,9 @@ public class Params implements IRequest {
         return true;
     }
 
+    @Override
+    public Priority getPriority() {
+        return Priority.Normal;
+    }
+
 }

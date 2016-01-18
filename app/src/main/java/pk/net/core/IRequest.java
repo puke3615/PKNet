@@ -18,4 +18,14 @@ public interface IRequest {
 
 	boolean supportCache();
 
+	Priority getPriority();
+
+	/**
+	 * 请求优先级，从左到右，自低向高
+	 */
+	public static enum Priority {
+		LOWER, LOW, Normal, High, Higher, Priority;
+	}
+
+
 }

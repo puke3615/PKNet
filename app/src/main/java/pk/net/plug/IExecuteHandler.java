@@ -2,6 +2,7 @@ package pk.net.plug;
 
 import pk.net.core.IRequest;
 import pk.net.core.IResult;
+import pk.net.core.ITask;
 
 /**
  * @author wzj
@@ -15,6 +16,6 @@ public interface IExecuteHandler {
     /**
      * 方法在主线程调用，然后通过异步任务执行结束后，最终仍在主线程回调
      **/
-    <T> IRequest execute(IRequest request, Class resultType, IResult<T> result);
+    ITask execute(IRequest request, Class resultType, IResult result);
 
 }

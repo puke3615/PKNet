@@ -33,7 +33,7 @@ public class Result<T> {
     }
 
     public boolean isSuccess() {
-        return responseCode == 200 && body != null;
+        return responseCode == 200 && errorMsg == null;
     }
 
     public T getBody() {

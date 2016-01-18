@@ -5,6 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import pk.net.core.IRequest;
+import pk.net.core.ITask;
 import pk.net.core.Type;
 
 
@@ -26,5 +28,10 @@ public @interface Config {
      * 是否支持缓冲
      **/
     boolean supportCache() default false;
+
+    /**
+     * 请求优先级
+     */
+    IRequest.Priority priority() default IRequest.Priority.Normal;
 
 }
